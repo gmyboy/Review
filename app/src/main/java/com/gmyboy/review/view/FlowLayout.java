@@ -1,184 +1,165 @@
 package com.gmyboy.review.view;
 
 import android.content.Context;
-import android.content.res.TypedArray;
-import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
-import android.graphics.drawable.Drawable;
-import android.text.TextPaint;
 import android.util.AttributeSet;
 import android.view.View;
+import android.view.ViewGroup;
 
-import com.gmyboy.review.R;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
- * TODO: document your custom view class.
+ * 流式布局
  */
-public class FlowLayout extends View {
-    private String mExampleString; // TODO: use a default from R.string...
-    private int mExampleColor = Color.RED; // TODO: use a default from R.color...
-    private float mExampleDimension = 0; // TODO: use a default from R.dimen...
-    private Drawable mExampleDrawable;
+public class FlowLayout extends ViewGroup {
 
-    private TextPaint mTextPaint;
-    private float mTextWidth;
-    private float mTextHeight;
+    //存储所有子View
+    private List<List<View>> mAllChildViews = new ArrayList<>();
+    //每一行的高度
+    private List<Integer> mLineHeight = new ArrayList<>();
 
     public FlowLayout(Context context) {
         super(context);
-        init(null, 0);
     }
 
     public FlowLayout(Context context, AttributeSet attrs) {
         super(context, attrs);
-        init(attrs, 0);
     }
 
     public FlowLayout(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
-        init(attrs, defStyle);
     }
 
-    private void init(AttributeSet attrs, int defStyle) {
-        // Load attributes
-        final TypedArray a = getContext().obtainStyledAttributes(attrs, R.styleable.FlowLayout, defStyle, 0);
+    /**
+     * Ask all children to measure themselves and compute the measurement of this
+     * layout based on the children.
+     */
+    @Override
+    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        //父控件传进来的宽度和高度以及对应的测量模式
+        int sizeWidth = MeasureSpec.getSize(widthMeasureSpec);
+        int modeWidth = MeasureSpec.getMode(widthMeasureSpec);
+        int sizeHeight = MeasureSpec.getSize(heightMeasureSpec);
+        int modeHeight = MeasureSpec.getMode(heightMeasureSpec);
 
-        mExampleString = a.getString(R.styleable.FlowLayout_exampleString);
-        mExampleColor = a.getColor(R.styleable.FlowLayout_exampleColor, mExampleColor);
-        // Use getDimensionPixelSize or getDimensionPixelOffset when dealing with
-        // values that should fall on pixel boundaries.
-        mExampleDimension = a.getDimension(R.styleable.FlowLayout_exampleDimension, mExampleDimension);
+        //如果当前ViewGroup的宽高为wrap_content的情况
+        int width = 0;//自己测量的宽度结果
+        int height = 0;//自己测量的高度结果
+        //记录每一行的宽度和高度
+        int lineWidth = 0;
+        int lineHeight = 0;
 
-        if (a.hasValue(R.styleable.FlowLayout_exampleDrawable)) {
-            mExampleDrawable = a.getDrawable(R.styleable.FlowLayout_exampleDrawable);
-            mExampleDrawable.setCallback(this);
+        int childCount = getChildCount();
+        for (int i = 0; i < childCount; i++) {
+            final View child = getChildAt(i);
+            // Measure the child.测量子view的宽高
+            measureChildWithMargins(child, widthMeasureSpec, 0, heightMeasureSpec, 0);
+            //得到LayoutParams
+            MarginLayoutParams layoutParams = (MarginLayoutParams) getLayoutParams();
+            //子view占据宽度
+            int childWidth = child.getMeasuredWidth() + layoutParams.leftMargin + layoutParams.rightMargin;
+            //子view占据高度
+            int childHeight = child.getMeasuredHeight() + layoutParams.topMargin + layoutParams.bottomMargin;
+
+            //换行
+            if (lineWidth + childWidth > sizeWidth) {
+                //对比得到最大的宽度
+                width = Math.max(width, lineWidth);
+                //重置lineWidth
+                lineWidth = childWidth;
+                //记录行高(换行)
+                height += lineHeight;
+                lineHeight = childHeight;
+            } else {//不换行情况
+                //叠加行宽
+                lineWidth += childWidth;
+                //得到最大行高
+                lineHeight = Math.max(lineHeight, childHeight);
+            }
+            //处理最后一个子View的情况
+            if (i == childCount - 1) {
+                width = Math.max(width, lineWidth);
+                height += lineHeight;
+            }
+            //wrap_content
+            setMeasuredDimension(modeWidth == MeasureSpec.EXACTLY ? sizeWidth : width, modeHeight == MeasureSpec.EXACTLY ? sizeHeight : height);
+            super.onMeasure(widthMeasureSpec, heightMeasureSpec);
         }
-
-        a.recycle();
-
-        // Set up a default TextPaint object
-        mTextPaint = new TextPaint();
-        mTextPaint.setFlags(Paint.ANTI_ALIAS_FLAG);
-        mTextPaint.setTextAlign(Paint.Align.LEFT);
-
-        // Update TextPaint and text measurements from attributes
-        invalidateTextPaintAndMeasurements();
     }
 
-    private void invalidateTextPaintAndMeasurements() {
-        mTextPaint.setTextSize(mExampleDimension);
-        mTextPaint.setColor(mExampleColor);
-        mTextWidth = mTextPaint.measureText(mExampleString);
+    /**
+     * Position all children within this layout.
+     */
+    @Override
+    protected void onLayout(boolean changed, int l, int t, int r, int b) {
+        mAllChildViews.clear();
+        mLineHeight.clear();
+        //获取当前ViewGroup的宽度
+        int width = getWidth();
 
-        Paint.FontMetrics fontMetrics = mTextPaint.getFontMetrics();
-        mTextHeight = fontMetrics.bottom;
+        int lineWidth = 0;
+        int lineHeight = 0;
+        //记录当前行的view
+        List<View> lineViews = new ArrayList<>();
+
+        int childCount = getChildCount();
+        for (int i = 0; i < childCount; i++) {
+            final View child = getChildAt(i);
+            MarginLayoutParams lp = (MarginLayoutParams) child.getLayoutParams();
+            int childWidth = child.getMeasuredWidth();
+            int childHeight = child.getMeasuredHeight();
+
+            //如果需要换行
+            if (childWidth + lineWidth + lp.leftMargin + lp.rightMargin > width) {
+                //记录LineHeight
+                mLineHeight.add(lineHeight);
+                //记录当前行的Views
+                mAllChildViews.add(lineViews);
+                //重置行的宽高
+                lineWidth = 0;
+                lineHeight = childHeight + lp.topMargin + lp.bottomMargin;
+                //重置view的集合
+                lineViews = new ArrayList();
+            }
+            lineWidth += childWidth + lp.leftMargin + lp.rightMargin;
+            lineHeight = Math.max(lineHeight, childHeight + lp.topMargin + lp.bottomMargin);
+            lineViews.add(child);
+        }
+        //处理最后一行
+        mLineHeight.add(lineHeight);
+        mAllChildViews.add(lineViews);
+
+        //设置子View的位置
+        int left = 0;
+        int top = 0;
+        //获取行数
+        int lineCount = mAllChildViews.size();
+        for (int i = 0; i < lineCount; i++) {
+            //当前行的views和高度
+            lineViews = mAllChildViews.get(i);
+            lineHeight = mLineHeight.get(i);
+            for (int j = 0; j < lineViews.size(); j++) {
+                View child = lineViews.get(j);
+                //判断是否显示
+                if (child.getVisibility() == View.GONE) {
+                    continue;
+                }
+                MarginLayoutParams lp = (MarginLayoutParams) child.getLayoutParams();
+                int cLeft = left + lp.leftMargin;
+                int cTop = top + lp.topMargin;
+                int cRight = cLeft + child.getMeasuredWidth();
+                int cBottom = cTop + child.getMeasuredHeight();
+                //进行子View进行布局
+                child.layout(cLeft, cTop, cRight, cBottom);
+                left += child.getMeasuredWidth() + lp.leftMargin + lp.rightMargin;
+            }
+            left = 0;
+            top += lineHeight;
+        }
     }
 
     @Override
-    protected void onDraw(Canvas canvas) {
-        super.onDraw(canvas);
-
-        // TODO: consider storing these as member variables to reduce
-        // allocations per draw cycle.
-        int paddingLeft = getPaddingLeft();
-        int paddingTop = getPaddingTop();
-        int paddingRight = getPaddingRight();
-        int paddingBottom = getPaddingBottom();
-
-        int contentWidth = getWidth() - paddingLeft - paddingRight;
-        int contentHeight = getHeight() - paddingTop - paddingBottom;
-
-        // Draw the text.
-        canvas.drawText(mExampleString,
-                paddingLeft + (contentWidth - mTextWidth) / 2,
-                paddingTop + (contentHeight + mTextHeight) / 2,
-                mTextPaint);
-
-        // Draw the example drawable on top of the text.
-        if (mExampleDrawable != null) {
-            mExampleDrawable.setBounds(paddingLeft, paddingTop,
-                    paddingLeft + contentWidth, paddingTop + contentHeight);
-            mExampleDrawable.draw(canvas);
-        }
-    }
-
-    /**
-     * Gets the example string attribute value.
-     *
-     * @return The example string attribute value.
-     */
-    public String getExampleString() {
-        return mExampleString;
-    }
-
-    /**
-     * Sets the view's example string attribute value. In the example view, this string
-     * is the text to draw.
-     *
-     * @param exampleString The example string attribute value to use.
-     */
-    public void setExampleString(String exampleString) {
-        mExampleString = exampleString;
-        invalidateTextPaintAndMeasurements();
-    }
-
-    /**
-     * Gets the example color attribute value.
-     *
-     * @return The example color attribute value.
-     */
-    public int getExampleColor() {
-        return mExampleColor;
-    }
-
-    /**
-     * Sets the view's example color attribute value. In the example view, this color
-     * is the font color.
-     *
-     * @param exampleColor The example color attribute value to use.
-     */
-    public void setExampleColor(int exampleColor) {
-        mExampleColor = exampleColor;
-        invalidateTextPaintAndMeasurements();
-    }
-
-    /**
-     * Gets the example dimension attribute value.
-     *
-     * @return The example dimension attribute value.
-     */
-    public float getExampleDimension() {
-        return mExampleDimension;
-    }
-
-    /**
-     * Sets the view's example dimension attribute value. In the example view, this dimension
-     * is the font size.
-     *
-     * @param exampleDimension The example dimension attribute value to use.
-     */
-    public void setExampleDimension(float exampleDimension) {
-        mExampleDimension = exampleDimension;
-        invalidateTextPaintAndMeasurements();
-    }
-
-    /**
-     * Gets the example drawable attribute value.
-     *
-     * @return The example drawable attribute value.
-     */
-    public Drawable getExampleDrawable() {
-        return mExampleDrawable;
-    }
-
-    /**
-     * Sets the view's example drawable attribute value. In the example view, this drawable is
-     * drawn above the text.
-     *
-     * @param exampleDrawable The example drawable attribute value to use.
-     */
-    public void setExampleDrawable(Drawable exampleDrawable) {
-        mExampleDrawable = exampleDrawable;
+    public LayoutParams generateLayoutParams(AttributeSet attrs) {
+        return new MarginLayoutParams(getContext(), attrs);
     }
 }
