@@ -105,17 +105,17 @@ public class MainActivity extends BaseActivity
             fragment = ActivitiesFragment.newInstance();
             transaction.replace(R.id.container, fragment);
         } else if (id == R.id.nav_gallery) {
-            fragment = ActivitiesFragment.newInstance();
-            transaction.replace(R.id.container, fragment);
+//            fragment = ActivitiesFragment.newInstance();
+//            transaction.replace(R.id.container, fragment);
         } else if (id == R.id.nav_slideshow) {
-            fragment = ActivitiesFragment.newInstance();
-            transaction.replace(R.id.container, fragment);
+//            fragment = ActivitiesFragment.newInstance();
+//            transaction.replace(R.id.container, fragment);
         } else if (id == R.id.nav_manage) {
-            fragment = ActivitiesFragment.newInstance();
-            transaction.replace(R.id.container, fragment);
+//            fragment = ActivitiesFragment.newInstance();
+//            transaction.replace(R.id.container, fragment);
         } else if (id == R.id.nav_share) {
-            fragment = ActivitiesFragment.newInstance();
-            transaction.replace(R.id.container, fragment);
+//            fragment = ActivitiesFragment.newInstance();
+//            transaction.replace(R.id.container, fragment);
         } else if (id == R.id.nav_send) {//流式布局
             fragment = FlowFragment.newInstance();
             transaction.replace(R.id.container, fragment);
