@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * 流式布局
+ * 流式布局Flow
  */
 public class FlowLayout extends ViewGroup {
 

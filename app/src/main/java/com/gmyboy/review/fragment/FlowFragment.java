@@ -15,6 +15,7 @@ import com.gmyboy.review.view.FlowLayout;
 import butterknife.BindView;
 
 /**
+ * 流式布局展示页面
  * Created by GMY on 2016-12-06 17:37.
  * Contact me via email igmyboy@gmail.com.
  */

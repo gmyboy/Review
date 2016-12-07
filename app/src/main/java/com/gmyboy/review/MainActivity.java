@@ -116,7 +116,7 @@ public class MainActivity extends BaseActivity
         } else if (id == R.id.nav_share) {
             fragment = ActivitiesFragment.newInstance();
             transaction.replace(R.id.container, fragment);
-        } else if (id == R.id.nav_send) {
+        } else if (id == R.id.nav_send) {//流式布局
             fragment = FlowFragment.newInstance();
             transaction.replace(R.id.container, fragment);
         }
