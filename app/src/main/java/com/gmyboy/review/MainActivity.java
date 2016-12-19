@@ -14,7 +14,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
 
-import com.gmyboy.review.fragment.FlowFragment;
+import com.gmyboy.review.fragment.services.ServicesFragment;
+import com.gmyboy.review.fragment.view.FlowFragment;
 import com.gmyboy.review.fragment.activities.ActivitiesFragment;
 
 import butterknife.BindView;
@@ -105,8 +106,8 @@ public class MainActivity extends BaseActivity
             fragment = ActivitiesFragment.newInstance();
             transaction.replace(R.id.container, fragment);
         } else if (id == R.id.nav_gallery) {
-//            fragment = ActivitiesFragment.newInstance();
-//            transaction.replace(R.id.container, fragment);
+            fragment = ServicesFragment.newInstance();
+            transaction.replace(R.id.container, fragment);
         } else if (id == R.id.nav_slideshow) {
 //            fragment = ActivitiesFragment.newInstance();
 //            transaction.replace(R.id.container, fragment);

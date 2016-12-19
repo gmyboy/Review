@@ -8,4 +8,6 @@
 
     <string name="frag_intent_btn_toactivity">启动activitry</string>
     <string name="tv_second">接收到的数据:</string>
+    <string name="myservice_service">用来测试继承自service的myservice</string>
+    <string name="myservice_intentservice">用来测试继承自intentservice</string>
 </resources>

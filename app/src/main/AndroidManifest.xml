@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.gmyboy.review">
+          package="com.gmyboy.review">
 
     <application
         android:allowBackup="true"
@@ -13,14 +13,27 @@
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+                <action android:name="android.intent.action.MAIN"/>
 
-                <category android:name="android.intent.category.LAUNCHER" />
+                <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <activity android:name=".fragment.activities.SecondActivity" android:theme="@style/AppTheme.NoActionBar">
-
+        <activity
+            android:name=".fragment.activities.SecondActivity"
+            android:theme="@style/AppTheme.NoActionBar">
         </activity>
+
+        <service
+            android:name=".fragment.services.MyService"
+            android:description="@string/myservice_service"
+            android:enabled="true"
+            android:exported="true">
+        </service>
+        <service
+            android:name=".fragment.services.MyIntentService"
+            android:description="@string/myservice_intentservice"
+            android:exported="false">
+        </service>
     </application>
 
 </manifest>
