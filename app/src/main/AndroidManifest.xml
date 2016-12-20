@@ -34,6 +34,11 @@
             android:description="@string/myservice_intentservice"
             android:exported="false">
         </service>
+        <service
+            android:name=".fragment.services.MyBindService"
+            android:enabled="true"
+            android:exported="true">
+        </service>
     </application>
 
 </manifest>

@@ -56,6 +56,7 @@ public class FlowLayout extends ViewGroup {
             measureChildWithMargins(child, widthMeasureSpec, 0, heightMeasureSpec, 0);
             //得到LayoutParams
             MarginLayoutParams layoutParams = (MarginLayoutParams) getLayoutParams();
+
             //子view占据宽度
             int childWidth = child.getMeasuredWidth() + layoutParams.leftMargin + layoutParams.rightMargin;
             //子view占据高度
@@ -149,7 +150,7 @@ public class FlowLayout extends ViewGroup {
                 int cTop = top + lp.topMargin;
                 int cRight = cLeft + child.getMeasuredWidth();
                 int cBottom = cTop + child.getMeasuredHeight();
-                //进行子View进行布局
+                //进行子View的布局
                 child.layout(cLeft, cTop, cRight, cBottom);
                 left += child.getMeasuredWidth() + lp.leftMargin + lp.rightMargin;
             }

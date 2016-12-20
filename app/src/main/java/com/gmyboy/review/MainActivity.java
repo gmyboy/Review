@@ -25,8 +25,6 @@ import butterknife.OnClick;
 public class MainActivity extends BaseActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
-    @BindView(R.id.fab)
-    FloatingActionButton fab;
     @BindView(R.id.nav_view)
     NavigationView navView;
     @BindView(R.id.drawer_layout)
@@ -35,13 +33,6 @@ public class MainActivity extends BaseActivity
     FrameLayout container;
     private Fragment fragment;
     private FragmentTransaction transaction;
-
-    @OnClick(R.id.fab)
-    void showSnack(View v) {
-        Snackbar.make(v, "Replace with your own action", Snackbar.LENGTH_LONG)
-                .setAction("Action", null).show();
-    }
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
