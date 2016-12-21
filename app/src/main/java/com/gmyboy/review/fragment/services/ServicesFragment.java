@@ -1,7 +1,11 @@
 package com.gmyboy.review.fragment.services;
 
+import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.os.Bundle;
+import android.os.IBinder;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -39,8 +43,35 @@ public class ServicesFragment extends BaseFragment {
 
     @OnClick(R.id.btn_startIntentservice)
     void startIntentService(View v) {
-        MyIntentService.startActionBaz(getActivity(),"intentservice","startActionBaz");
+        MyIntentService.startActionBaz(getActivity(), "intentservice", "startActionBaz");
     }
+
+    private MyBindService mService;
+    private ServiceConnection mConnection = new ServiceConnection() {
+        @Override
+        public void onServiceConnected(ComponentName name, IBinder service) {
+            MyBindService.LocalBinder binder = (MyBindService.LocalBinder) service;
+            mService = binder.getService();
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName name) {
+
+        }
+    };
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        Intent mIntent = new Intent(getContext(), MyBindService.class);
+        getContext().bindService(mIntent, mConnection, Context.BIND_AUTO_CREATE);
+    }
+
+//    @Override
+//    public void onDestroy() {
+//        super.onDestroy();
+//        getContext().unbindService(mConnection);
+//    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -56,4 +87,5 @@ public class ServicesFragment extends BaseFragment {
         ServicesFragment fragment = new ServicesFragment();
         return fragment;
     }
+
 }
