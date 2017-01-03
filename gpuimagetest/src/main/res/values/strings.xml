@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">gpuImageTest</string>
+    <string name="image_sepia">Sepia</string>
+    <string name="image_gray">Gray</string>
+    <string name="image_sharp">Sharp</string>
+    <string name="image_edge">Edge</string>
+</resources>
