@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">autoService</string>
+    <string name="myintentservice">test intentservice</string>
+</resources>
