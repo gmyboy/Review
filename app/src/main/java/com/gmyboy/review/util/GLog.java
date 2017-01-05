@@ -1,12 +1,17 @@
 package com.gmyboy.review.util;
 
 import android.util.Log;
+import android.view.ViewManager;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by GMY on 2015/8/25 09:35.
  * Contact me via email gmyboy@qq.com.
  */
 public class GLog {
+    public List mList = new ArrayList();
     private static final char TOP_LEFT_CORNER = '╔';
     private static final char BOTTOM_LEFT_CORNER = '╚';
     private static final char MIDDLE_CORNER = '╟';

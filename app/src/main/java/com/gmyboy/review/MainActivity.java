@@ -1,9 +1,7 @@
 package com.gmyboy.review;
 
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
@@ -11,16 +9,14 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.FrameLayout;
 
+import com.gmyboy.review.fragment.activities.ActivitiesFragment;
 import com.gmyboy.review.fragment.services.ServicesFragment;
 import com.gmyboy.review.fragment.view.FlowFragment;
-import com.gmyboy.review.fragment.activities.ActivitiesFragment;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 
 public class MainActivity extends BaseActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -119,4 +115,18 @@ public class MainActivity extends BaseActivity
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
+
+
+    private int b;
+
+    public class MyPattern {
+        private int a;
+
+        public int getMax() {
+            return a > b ? a : b;
+        }
+    }
+
+    private MyPattern myPattern=new MainActivity.MyPattern();
+
 }

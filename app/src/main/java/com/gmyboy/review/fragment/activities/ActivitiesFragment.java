@@ -4,8 +4,12 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.IntDef;
 import android.support.annotation.Nullable;
+import android.support.annotation.StringRes;
+import android.support.design.widget.Snackbar;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.gmyboy.review.R;
@@ -47,6 +51,7 @@ public class ActivitiesFragment extends BaseFragment {
 //            mParam1 = getArguments().getString(ARG_PARAM1);
         }
     }
+
 
     @Override
     public void onStart() {
@@ -103,12 +108,6 @@ public class ActivitiesFragment extends BaseFragment {
     }
 
     @Override
-    public int bindView() {
-        GLog.e("onCreateView()");
-        return R.layout.frag_activity;
-    }
-
-    @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         GLog.e("onViewCreated()");
         super.onViewCreated(view, savedInstanceState);
@@ -122,5 +121,10 @@ public class ActivitiesFragment extends BaseFragment {
                 tvBackStr.setText(String.valueOf(data.getExtras().getString("returnstr")));
             }
         }
+    }
+
+    @Override
+    public int bindView() {
+        return R.layout.frag_activity;
     }
 }

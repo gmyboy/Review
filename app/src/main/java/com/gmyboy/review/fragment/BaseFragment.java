@@ -5,10 +5,14 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewManager;
 
 import butterknife.ButterKnife;
 
-public class BaseFragment extends Fragment {
+/**
+ * 声明为抽象类（不能被实例化）和子类必须继承的方法
+ */
+public abstract class BaseFragment extends Fragment {
     private View view;
 
     @Override
@@ -25,8 +29,6 @@ public class BaseFragment extends Fragment {
      *
      * @return
      */
-    public int bindView() {
-        return 0;
-    }
+    protected abstract int bindView();
 
 }

@@ -1,4 +1,4 @@
-package com.gmyboy.review.fragment.behavior;
+package com.gmyboy.review.view.behavior;
 
 import android.animation.Animator;
 import android.content.Context;
