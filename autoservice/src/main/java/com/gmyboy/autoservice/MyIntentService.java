@@ -110,9 +110,9 @@ public class MyIntentService extends IntentService {
 //                }
 //            });
 
-            Response<ApiResponse> response = App.getRestClient().getLocationService().setPos(longitude, latitude).execute();
-            ApiResponse body = response.body();
-            GLog.e(body.toString());
+//            Response<ApiResponse> response = App.getRestClient().getLocationService().setPos(longitude, latitude).execute();
+//            ApiResponse body = response.body();
+//            GLog.e(body.toString());
 
         } catch (Exception e) {
             GLog.e(e.getMessage());

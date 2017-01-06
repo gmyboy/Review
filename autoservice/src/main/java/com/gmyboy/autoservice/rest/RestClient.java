@@ -12,7 +12,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
  * Contact me via email igmyboy@gmail.com.
  */
 public class RestClient {
-    private static final String BASE_URL = "http://a.ssei.cn/sseiserver/api/";
+    private static final String BASE_URL = "http://a.ssei.cn/sseiserver/position/";
     private LocationService locationService;
 
     public RestClient() {

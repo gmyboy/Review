@@ -14,5 +14,5 @@ import retrofit2.http.POST;
 public interface LocationService {
     @FormUrlEncoded
     @POST("position/refresh")
-    Call<ApiResponse> setPos(@Field("lon") String longitude, @Field("lat") String latitude);
+    Call<ApiResponse> setPos(@Field("lon") String longitude, @Field("lat") String latitude, @Field("location") String location, @Field("client") String client);
 }
