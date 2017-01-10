@@ -1,1 +1,1 @@
-include ':app', ':gpuimagetest', ':autoservice'
+include ':app', ':gpuimagetest', ':autoservice', ':mybuilder'

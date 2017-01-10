@@ -6,6 +6,7 @@
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/autoservice/autoservice.iml" filepath="$PROJECT_DIR$/autoservice/autoservice.iml" />
       <module fileurl="file://$PROJECT_DIR$/gpuimagetest/gpuimagetest.iml" filepath="$PROJECT_DIR$/gpuimagetest/gpuimagetest.iml" />
+      <module fileurl="file://$PROJECT_DIR$/mybuilder/mybuilder.iml" filepath="$PROJECT_DIR$/mybuilder/mybuilder.iml" />
     </modules>
   </component>
 </project>
