@@ -1,8 +1,12 @@
 package com.gmyboy.autoservice;
 
+import android.app.Notification;
+import android.app.PendingIntent;
 import android.app.Service;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.os.Build;
 import android.os.Handler;
 import android.os.HandlerThread;
@@ -10,6 +14,8 @@ import android.os.IBinder;
 import android.os.Looper;
 import android.os.Message;
 import android.os.Process;
+import android.support.v4.app.NotificationCompat;
+import android.support.v4.app.TaskStackBuilder;
 import android.telephony.TelephonyManager;
 
 import com.amap.api.location.AMapLocation;
@@ -24,12 +30,16 @@ import retrofit2.Response;
 
 
 public class MyService extends Service implements AMapLocationListener {
+
+    private final int PID = android.os.Process.myPid();
     private Looper mServiceLooper;
     private ServiceHandler mServiceHandler;
 
     private AMapLocationClient locationClient = null;
 
     private TelephonyManager telecomManager;
+    private ServiceConnection mConnection;
+
 
     @Override
     public void onLocationChanged(AMapLocation aMapLocation) {
@@ -96,6 +106,60 @@ public class MyService extends Service implements AMapLocationListener {
         locationClient.setLocationOption(getDefaultOption());
         // 设置定位监听
         locationClient.setLocationListener(this);
+
+//        startForeground(PID, getNotification());
+
+        if (mConnection == null) {
+            mConnection = new ServiceConnection() {
+                @Override
+                public void onServiceConnected(ComponentName name, IBinder service) {
+                    MyServiceBrige.MyBinder myService = (MyServiceBrige.MyBinder) service;
+                    MyServiceBrige mBrige = myService.getService();
+
+                    startForeground(PID, getNotification());
+                    mBrige.startForeground(PID, getNotification());
+
+                    mBrige.stopForeground(true);
+                    unbindService(mConnection);
+                    mConnection = null;
+
+                }
+
+                @Override
+                public void onServiceDisconnected(ComponentName name) {
+
+                }
+            };
+        }
+        bindService(new Intent(this, MyServiceBrige.class), mConnection, Service.BIND_AUTO_CREATE);
+    }
+
+    private Notification getNotification() {
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(this)
+                .setSmallIcon(R.mipmap.ic_launcher)
+                .setContentTitle("My notification")
+                .setContentText("Hello World!");
+        // Creates an explicit intent for an Activity in your app
+        Intent resultIntent = new Intent(this, MainActivity.class);
+
+        // The stack builder object will contain an artificial back stack for the
+        // started Activity.
+        // This ensures that navigating backward from the Activity leads out of
+        // your application to the Home screen.
+        TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
+        // Adds the back stack for the Intent (but not the Intent itself)
+        stackBuilder.addParentStack(MainActivity.class);
+        // Adds the Intent that starts the Activity to the top of the stack
+        stackBuilder.addNextIntent(resultIntent);
+
+        PendingIntent resultPendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_CANCEL_CURRENT);
+        builder.setContentIntent(resultPendingIntent);
+
+//        NotificationManager mNotificationManager =
+//                (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        // mId allows you to update the notification later on.
+//        mNotificationManager.notify(123, builder.build());
+        return builder.build();
     }
 
     @Override
@@ -108,7 +172,6 @@ public class MyService extends Service implements AMapLocationListener {
 
     @Override
     public IBinder onBind(Intent intent) {
-
         // don't provide binding
         return null;
     }
