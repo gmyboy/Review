@@ -1,5 +1,7 @@
 package com.gmyboy.mybuilder;
 
+import android.content.res.Resources;
+
 /**
  * Created by GMY on 2017-01-10 15:37.
  * Contact me via email igmyboy@gmail.com.
