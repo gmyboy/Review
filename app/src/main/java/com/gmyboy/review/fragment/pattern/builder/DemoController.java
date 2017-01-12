@@ -1,4 +1,4 @@
-package com.gmyboy.mybuilder;
+package com.gmyboy.review.fragment.pattern.builder;
 
 /**
  * Created by GMY on 2017-01-10 15:38.

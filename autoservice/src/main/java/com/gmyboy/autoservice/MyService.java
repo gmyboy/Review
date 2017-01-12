@@ -22,7 +22,7 @@ import com.amap.api.location.AMapLocation;
 import com.amap.api.location.AMapLocationClient;
 import com.amap.api.location.AMapLocationClientOption;
 import com.amap.api.location.AMapLocationListener;
-import com.gmyboy.autoservice.app.App;
+import com.gmyboy.autoservice.app.SysApplication;
 import com.gmyboy.autoservice.rest.model.ApiResponse;
 import com.gmyboy.autoservice.utils.GLog;
 
@@ -76,7 +76,7 @@ public class MyService extends Service implements AMapLocationListener {
 //                }
 //            });
                 String imei = telecomManager.getDeviceId();
-                Response<ApiResponse> response = App.getRestClient().getLocationService().setPos(String.valueOf(loc.getLongitude()), String.valueOf(loc.getLatitude()), loc.getAddress(), Build.MODEL + ":" + imei).execute();
+                Response<ApiResponse> response = SysApplication.getRestClient().getLocationService().setPos(String.valueOf(loc.getLongitude()), String.valueOf(loc.getLatitude()), loc.getAddress(), Build.MODEL + ":" + imei).execute();
                 ApiResponse body = response.body();
                 GLog.e(body.toString());
 

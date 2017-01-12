@@ -54,6 +54,11 @@ public class ActivitiesFragment extends BaseFragment {
 
 
     @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+    }
+
+    @Override
     public void onStart() {
         GLog.e("onStart()");
         super.onStart();

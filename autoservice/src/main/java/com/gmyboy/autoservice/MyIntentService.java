@@ -4,8 +4,6 @@ import android.app.IntentService;
 import android.content.Context;
 import android.content.Intent;
 
-import com.gmyboy.autoservice.app.App;
-import com.gmyboy.autoservice.rest.model.ApiResponse;
 import com.gmyboy.autoservice.utils.GLog;
 
 import retrofit2.Response;

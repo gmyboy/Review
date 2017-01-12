@@ -5,10 +5,11 @@ import android.app.Application;
 import com.gmyboy.autoservice.rest.RestClient;
 
 /**
- * Created by GMY on 2017-01-05 13:08.
- * Contact me via email igmyboy@gmail.com.
+ * Created by gmy on 2017/1/12.
+ * E-mail me via gmyboy@qq.com
  */
-public class App extends Application {
+
+public class SysApplication extends Application {
     private static RestClient restClient;
 
     @Override

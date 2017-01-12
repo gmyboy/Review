@@ -1,4 +1,4 @@
-package com.gmyboy.mybuilder;
+package com.gmyboy.review.fragment.pattern.builder;
 
 import android.content.res.Resources;
 
