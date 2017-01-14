@@ -36,56 +36,57 @@ public class FlowLayout extends ViewGroup {
      */
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        //父控件传进来的宽度和高度以及对应的测量模式
-        int sizeWidth = MeasureSpec.getSize(widthMeasureSpec);
-        int modeWidth = MeasureSpec.getMode(widthMeasureSpec);
-        int sizeHeight = MeasureSpec.getSize(heightMeasureSpec);
-        int modeHeight = MeasureSpec.getMode(heightMeasureSpec);
-
-        //如果当前ViewGroup的宽高为wrap_content的情况
-        int width = 0;//自己测量的宽度结果
-        int height = 0;//自己测量的高度结果
-        //记录每一行的宽度和高度
-        int lineWidth = 0;
-        int lineHeight = 0;
-
-        int childCount = getChildCount();
-        for (int i = 0; i < childCount; i++) {
-            final View child = getChildAt(i);
-            // Measure the child.测量子view的宽高
-            measureChildWithMargins(child, widthMeasureSpec, 0, heightMeasureSpec, 0);
-            //得到LayoutParams
-            MarginLayoutParams layoutParams = (MarginLayoutParams) getLayoutParams();
-
-            //子view占据宽度
-            int childWidth = child.getMeasuredWidth() + layoutParams.leftMargin + layoutParams.rightMargin;
-            //子view占据高度
-            int childHeight = child.getMeasuredHeight() + layoutParams.topMargin + layoutParams.bottomMargin;
-
-            //换行
-            if (lineWidth + childWidth > sizeWidth) {
-                //对比得到最大的宽度
-                width = Math.max(width, lineWidth);
-                //重置lineWidth
-                lineWidth = childWidth;
-                //记录行高(换行)
-                height += lineHeight;
-                lineHeight = childHeight;
-            } else {//不换行情况
-                //叠加行宽
-                lineWidth += childWidth;
-                //得到最大行高
-                lineHeight = Math.max(lineHeight, childHeight);
-            }
-            //处理最后一个子View的情况
-            if (i == childCount - 1) {
-                width = Math.max(width, lineWidth);
-                height += lineHeight;
-            }
-            //wrap_content
-            setMeasuredDimension(modeWidth == MeasureSpec.EXACTLY ? sizeWidth : width, modeHeight == MeasureSpec.EXACTLY ? sizeHeight : height);
-            super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-        }
+        super.onMeasure(widthMeasureSpec,heightMeasureSpec);
+        measureChildren(widthMeasureSpec, heightMeasureSpec);
+//        //父控件传进来的宽度和高度以及对应的测量模式
+//        int sizeWidth = MeasureSpec.getSize(widthMeasureSpec);
+//        int modeWidth = MeasureSpec.getMode(widthMeasureSpec);
+//        int sizeHeight = MeasureSpec.getSize(heightMeasureSpec);
+//        int modeHeight = MeasureSpec.getMode(heightMeasureSpec);
+//
+//        //如果当前ViewGroup的宽高为wrap_content的情况
+//        int width = 0;//自己测量的宽度结果
+//        int height = 0;//自己测量的高度结果
+//        //记录每一行的宽度和高度
+//        int lineWidth = 0;
+//        int lineHeight = 0;
+//        int childCount = getChildCount();
+//        for (int i = 0; i < childCount; i++) {
+//            final View child = getChildAt(i);
+//            // Measure the child.测量子view的宽高
+//            measureChildWithMargins(child, widthMeasureSpec, 0, heightMeasureSpec, 0);
+//            //得到LayoutParams
+//            MarginLayoutParams layoutParams = (MarginLayoutParams) getLayoutParams();
+//
+//            //子view占据宽度
+//            int childWidth = child.getMeasuredWidth() + layoutParams.leftMargin + layoutParams.rightMargin;
+//            //子view占据高度
+//            int childHeight = child.getMeasuredHeight() + layoutParams.topMargin + layoutParams.bottomMargin;
+//
+//            //换行
+//            if (lineWidth + childWidth > sizeWidth) {
+//                //对比得到最大的宽度
+//                width = Math.max(width, lineWidth);
+//                //重置lineWidth
+//                lineWidth = childWidth;
+//                //记录行高(换行)
+//                height += lineHeight;
+//                lineHeight = childHeight;
+//            } else {//不换行情况
+//                //叠加行宽
+//                lineWidth += childWidth;
+//                //得到最大行高
+//                lineHeight = Math.max(lineHeight, childHeight);
+//            }
+//            //处理最后一个子View的情况
+//            if (i == childCount - 1) {
+//                width = Math.max(width, lineWidth);
+//                height += lineHeight;
+//            }
+//            //wrap_content
+//            setMeasuredDimension(modeWidth == MeasureSpec.EXACTLY ? sizeWidth : width, modeHeight == MeasureSpec.EXACTLY ? sizeHeight : height);
+//            super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+//        }
     }
 
     /**

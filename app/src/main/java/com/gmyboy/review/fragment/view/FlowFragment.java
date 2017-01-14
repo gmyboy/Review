@@ -5,6 +5,7 @@ import android.support.annotation.Nullable;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.LinearLayout;
 
 import com.gmyboy.review.R;
 import com.gmyboy.review.fragment.BaseFragment;
@@ -39,7 +40,7 @@ public class FlowFragment extends BaseFragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         ViewGroup.MarginLayoutParams lp = new ViewGroup.MarginLayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        lp.setMargins(2,2,2,2);
+        lp.setMargins(2, 2, 2, 2);
         for (int i = 0; i < mNames.length; i++) {
             Button tv = new Button(getContext());
             tv.setText(mNames[i]);
